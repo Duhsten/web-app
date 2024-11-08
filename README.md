@@ -4,6 +4,17 @@
 
 This should help you setup and install all the deps needed for this project!!
 
+
+(IF you do not have NodeJS and NPM installed you need to download it from there site [NodeJS](https://nodejs.org/en) if your on ___Windows___)
+
+If you are on linux, specifically ___Ubuntu___, you can use this command
+
+```bash
+sudo apt update
+sudo apt install nodejs
+sudo apt install npm
+```
+
 ### 1. Install Required Global Packages
 
 First, you’ll need to install a few packages globally. These will allow you to run Ionic and Capacitor commands from the command line.
