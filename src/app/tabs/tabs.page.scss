@@ -1,1 +1,17 @@
+ion-tab-button {
+  --color: var(--ion-color-medium);
+  --color-selected: var(--ion-color-primary);
 
+  .tab-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    filter: invert(60%); // For medium gray when not selected
+  }
+
+  &.tab-selected {
+    .tab-icon {
+      filter: invert(40%) sepia(80%) saturate(1000%) hue-rotate(320deg) brightness(100%) contrast(90%); // For primary color when selected
+    }
+  }
+}

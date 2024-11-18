@@ -1,0 +1,169 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Pokédex
+    </ion-title>
+  </ion-toolbar>
+
+  <!-- Search Bar -->
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Search Pokémon"
+      (ionInput)="onSearchChange($event)"
+      [debounce]="300"
+      animated="true"
+    ></ion-searchbar>
+  </ion-toolbar>
+
+  <!-- Filters Section -->
+  <ion-toolbar>
+    <ion-item>
+      <ion-label>Filters</ion-label>
+      <ion-button slot="end" fill="clear" (click)="toggleFilters()">
+        <ion-icon [name]="showFilters ? 'chevron-up' : 'chevron-down'"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+
+  <ion-accordion-group [value]="showFilters ? 'filters' : ''">
+    <ion-accordion value="filters">
+      <ion-item slot="header">
+        <ion-label>Advanced Filters</ion-label>
+      </ion-item>
+      
+      <div slot="content" class="filter-content">
+        <!-- Type Filter -->
+        <ion-item>
+          <ion-select
+            [(ngModel)]="filters.type"
+            (ionChange)="onFilterChange()"
+            placeholder="Select Type"
+            interface="popover"
+          >
+            <ion-select-option value="">All Types</ion-select-option>
+            <ion-select-option *ngFor="let type of pokemonTypes" [value]="type">
+              {{ type | titlecase }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Weight Range -->
+        <ion-item-group>
+          <ion-item-divider>
+            <ion-label>Weight Range (kg)</ion-label>
+          </ion-item-divider>
+          <ion-item>
+            <ion-input
+              type="number"
+              [(ngModel)]="filters.minWeight"
+              (ionChange)="onFilterChange()"
+              placeholder="Min Weight"
+              min="0"
+            ></ion-input>
+            <ion-input
+              type="number"
+              [(ngModel)]="filters.maxWeight"
+              (ionChange)="onFilterChange()"
+              placeholder="Max Weight"
+              min="0"
+            ></ion-input>
+          </ion-item>
+        </ion-item-group>
+
+        <!-- Height Range -->
+        <ion-item-group>
+          <ion-item-divider>
+            <ion-label>Height Range (m)</ion-label>
+          </ion-item-divider>
+          <ion-item>
+            <ion-input
+              type="number"
+              [(ngModel)]="filters.minHeight"
+              (ionChange)="onFilterChange()"
+              placeholder="Min Height"
+              min="0"
+            ></ion-input>
+            <ion-input
+              type="number"
+              [(ngModel)]="filters.maxHeight"
+              (ionChange)="onFilterChange()"
+              placeholder="Max Height"
+              min="0"
+            ></ion-input>
+          </ion-item>
+        </ion-item-group>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <!-- Sort Controls -->
+  <ion-toolbar>
+    <ion-item>
+      <ion-select
+        [(ngModel)]="sortBy"
+        (ionChange)="onSortChange()"
+        interface="popover"
+        slot="start"
+      >
+        <ion-select-option *ngFor="let option of sortOptions" [value]="option.value">
+          Sort by {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+      
+      <ion-button fill="clear" (click)="toggleSortDirection()" slot="end">
+        <ion-icon [name]="sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Pokemon List -->
+  <ion-list>
+    <ion-item *ngFor="let pokemon of displayedPokemon" 
+              class="pokemon-item"
+              [routerLink]="['/tabs/pokemon', pokemon.id]"
+              detail="true">
+      <ion-avatar slot="start">
+        <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name">
+      </ion-avatar>
+      <ion-label>
+        <div class="pokemon-header">
+          <h2>{{ pokemon.name | titlecase }}</h2>
+          <span class="pokemon-number">#{{ pokemon.id.toString().padStart(3, '0') }}</span>
+        </div>
+        <div class="pokemon-details">
+          <ion-chip *ngFor="let type of pokemon.types" 
+                  [style.background-color]="getTypeColor(type.type.name)"
+                  class="type-chip">
+            <ion-label color="light">{{ type.type.name | titlecase }}</ion-label>
+          </ion-chip>
+          <div class="stats">
+            <span>Height: {{ pokemon.height/10 }}m</span>
+            <span>Weight: {{ pokemon.weight/10 }}kg</span>
+          </div>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more Pokémon...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <!-- Loading Skeleton -->
+  <ion-list *ngIf="isLoading">
+    <ion-item *ngFor="let i of [1,2,3,4,5]">
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <h2><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h2>
+        <p><ion-skeleton-text animated style="width: 70%"></ion-skeleton-text></p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

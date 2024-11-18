@@ -1,0 +1,133 @@
+.dashboard-container {
+  padding: 16px;
+}
+
+.welcome-card {
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  color: white;
+
+  .welcome-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .welcome-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  .welcome-text {
+    flex-grow: 1;
+  }
+
+  ion-card-title, ion-card-subtitle {
+    color: white;
+  }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.dashboard-item {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  ion-card-header {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .dashboard-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    display: block;
+    margin: 0 auto 10px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  ion-card-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+  }
+
+  ion-card-content {
+    font-size: 0.9em;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+// Pokemon-themed color schemes
+.dashboard-item {
+  &[color="primary"] {
+    background: linear-gradient(135deg, #FF1C1C, #FF5959); // Pokédex Red
+    .dashboard-icon { color: white; }
+  }
+  
+  &[color="secondary"] {
+    background: linear-gradient(135deg, #4B7BF5, #86A6FF); // Item Blue
+    .dashboard-icon { color: white; }
+  }
+  
+  &[color="tertiary"] {
+    background: linear-gradient(135deg, #FFC107, #FFD54F); // Moves Yellow
+    .dashboard-icon { color: white; }
+  }
+  
+  &[color="success"] {
+    background: linear-gradient(135deg, #4CAF50, #81C784); // Location Green
+    .dashboard-icon { color: white; }
+  }
+  
+  &[color="warning"] {
+    background: linear-gradient(135deg, #9C27B0, #BA68C8); // Types Purple
+    .dashboard-icon { color: white; }
+  }
+  
+  &[color="danger"] {
+    background: linear-gradient(135deg, #FF9800, #FFB74D); // Evolution Orange
+    .dashboard-icon { color: white; }
+  }
+}
+
+// Add subtle hover effect
+.dashboard-item {
+  &:hover {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
