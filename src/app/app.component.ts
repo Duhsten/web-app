@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PokemonService } from './services/pokemon.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private pokimonAPI: PokemonService) {
+    this.test();
+  }
+
+  async test() {
+    console.log(await this.pokimonAPI.getPokemonDetails("ditto"))
+  }
 }

@@ -1,0 +1,102 @@
+.pokemon-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  
+  ion-avatar {
+    width: 70px;
+    height: 70px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    margin-right: 16px;
+  }
+}
+
+.pokemon-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+
+  h2 {
+    font-weight: 600;
+    font-size: 1.2em;
+    margin: 0;
+  }
+}
+
+.pokemon-number {
+  color: var(--ion-color-medium);
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.pokemon-details {
+  .stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+    color: var(--ion-color-medium);
+    font-size: 0.9em;
+  }
+}
+
+.type-chip {
+  margin-right: 8px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 0.85em;
+  
+  ion-label {
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.filter-content {
+  padding: 8px;
+  background: var(--ion-color-light);
+
+  ion-item-group {
+    margin-bottom: 16px;
+  }
+
+  ion-item-divider {
+    --background: transparent;
+    --padding-start: 0;
+    font-size: 0.9em;
+    margin-bottom: 4px;
+  }
+
+  ion-input {
+    --padding-start: 8px;
+    margin-right: 8px;
+  }
+}
+
+ion-searchbar {
+  --background: var(--ion-background-color);
+  --box-shadow: none;
+  --border-radius: 8px;
+  padding: 0 12px;
+}
+
+ion-select {
+  width: 100%;
+  max-width: 100%;
+  --padding-start: 0;
+}
+
+ion-infinite-scroll-content {
+  min-height: 80px;
+}
+
+// Improved filter section
+ion-accordion-group {
+  background: var(--ion-color-light);
+}
+
+.filter-button {
+  margin: 16px;
+}
