@@ -100,14 +100,13 @@ export class PokemonDetailPage implements OnInit {
     return 'danger';
   }
 
-  // Segment changed handler
-  segmentChanged(event: any) {
-    this.activeSegment = event.detail.value;
-  }
-
-  // Refresh Pokemon data
-  async doRefresh(event: any) {
-    await this.loadPokemonDetails();
-    event.target.complete();
-  }
+  segmentChanged(event: any) {  
+    this.activeSegment = event.detail.value;  
+  }  
+    
+  async doRefresh(event: any) {  
+    await this.loadPokemonDetails();  
+    event.target.complete();  
+  }  
+  
 } 
