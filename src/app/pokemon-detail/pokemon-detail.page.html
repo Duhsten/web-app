@@ -3,7 +3,12 @@
    <ion-buttons slot="start">  
     <ion-back-button defaultHref="/tabs/pokemon"></ion-back-button>  
    </ion-buttons>  
-   <ion-title>{{ pokemon?.name }}</ion-title>  
+   <ion-title>{{ pokemon?.name | titlecase }}</ion-title>  
+   <ion-buttons slot="end">  
+    <ion-button (click)="sharePokemon()">  
+     <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>  
+    </ion-button>  
+   </ion-buttons>  
   </ion-toolbar>  
 </ion-header>  
   
