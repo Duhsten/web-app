@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PokemonService } from '../services/pokemon.service';
 import { Pokemon } from '../models/pokemon.model';
 import { LoadingController } from '@ionic/angular';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -109,4 +110,34 @@ export class PokemonDetailPage implements OnInit {
     event.target.complete();  
   }  
   
+  async sharePokemon() {
+    if (!this.pokemon) return;
+
+    // Format stats into a readable string
+    const stats = this.pokemon.stats
+      .map(stat => `${stat.stat.name}: ${stat.base_stat}`)
+      .join('\n');
+
+    // Format types into a readable string
+    const types = this.pokemon.types
+      .map(type => type.type.name)
+      .join(', ');
+
+    const shareText = `Check out ${this.pokemon.name.toUpperCase()}!\n\n` +
+      `Types: ${types}\n` +
+      `Height: ${this.formatHeight(this.pokemon.height)}\n` +
+      `Weight: ${this.formatWeight(this.pokemon.weight)}\n\n` +
+      `Base Stats:\n${stats}`;
+
+    try {
+      await Share.share({
+        title: `Pokémon: ${this.pokemon.name}`,
+        text: shareText,
+        url: this.pokemon.sprites.front_default, // Include the Pokemon's image URL
+        dialogTitle: 'Share this Pokémon',
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  }
 } 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../services/pokemon.service';
 import { Pokemon, PokemonListResponse } from '../models/pokemon.model';
+import { LoadingController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pokedex',
@@ -42,7 +43,11 @@ export class PokedexPage implements OnInit {
 
   showFilters = false;
 
-  constructor(private pokemonService: PokemonService) {}
+  constructor(
+    private pokemonService: PokemonService,
+    private loadingController: LoadingController,
+    private navCtrl: NavController
+  ) {}
 
   async ngOnInit() {
     await this.loadAllPokemon();
@@ -183,5 +188,9 @@ export class PokedexPage implements OnInit {
 
   toggleFilters() {
     this.showFilters = !this.showFilters;
+  }
+
+  goBack() {
+    this.navCtrl.navigateBack('/tabs/dashboard');
   }
 }

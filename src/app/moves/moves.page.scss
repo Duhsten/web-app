@@ -1,0 +1,26 @@
+.move-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+ion-chip {
+  margin: 0;
+  
+  ion-label {
+    font-size: 0.85em;
+  }
+}
+
+ion-searchbar {
+  padding: 0 12px;
+  --background: var(--ion-background-color);
+  --box-shadow: none;
+  --border-radius: 8px;
+}
+
+.error-message {
+  text-align: center;
+  padding: 16px;
+} 
