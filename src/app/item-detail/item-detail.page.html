@@ -3,13 +3,123 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/items"></ion-back-button>
     </ion-buttons>
-    <ion-title>Item Details</ion-title>
+    <ion-title>{{ item?.name | titlecase }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="shareItem()">
+        <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="item-placeholder">
-    <h2>Item Detail Page</h2>
-    <p>Needs to be implemented!</p>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="item" class="ion-padding">
+    <!-- Item Card -->
+    <ion-card>
+      <ion-card-header>
+        <div class="item-header">
+          <img [src]="item.sprites.default" [alt]="item.name" class="item-sprite">
+          <div class="item-info">
+            <ion-card-title>{{ item.name | titlecase }}</ion-card-title>
+            <ion-card-subtitle>{{ formatCost(item.cost) }}</ion-card-subtitle>
+          </div>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Segment Controls -->
+        <ion-segment [(ngModel)]="activeSegment" (ionChange)="segmentChanged($event)">
+          <ion-segment-button value="details">
+            <ion-label>Details</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="effects">
+            <ion-label>Effects</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="attributes">
+            <ion-label>Attributes</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+
+        <!-- Details Segment -->
+        <div *ngIf="activeSegment === 'details'" class="segment-content">
+          <ion-list>
+            <ion-item>
+              <ion-label>
+                <h2>Category</h2>
+                <p>{{ item.category.name | titlecase }}</p>
+              </ion-label>
+            </ion-item>
+            
+            <ion-item>
+              <ion-label>
+                <h2>Cost</h2>
+                <p>{{ formatCost(item.cost) }}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>
+                <h2>Fling Power</h2>
+                <p>{{ item.fling_power || 'N/A' }}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-label>
+                <h2>Description</h2>
+                <p>{{ getShortEffectText() }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Effects Segment -->
+        <div *ngIf="activeSegment === 'effects'" class="segment-content">
+          <ion-list>
+            <ion-item>
+              <ion-label class="ion-text-wrap">
+                <h2>Effect</h2>
+                <p>{{ getEffectText() }}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="item.fling_effect">
+              <ion-label class="ion-text-wrap">
+                <h2>Fling Effect</h2>
+                <p>{{ item.fling_effect.name | titlecase }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Attributes Segment -->
+        <div *ngIf="activeSegment === 'attributes'" class="segment-content">
+          <ion-list>
+            <ion-item *ngFor="let attribute of item.attributes">
+              <ion-label>{{ attribute.name | titlecase }}</ion-label>
+              <ion-icon name="checkmark" slot="end" color="success"></ion-icon>
+            </ion-item>
+
+            <ion-item *ngIf="!item.attributes?.length">
+              <ion-label color="medium">No attributes available</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Loading State -->
+  <ion-skeleton-text *ngIf="isLoading" animated style="width: 100%; height: 300px;"></ion-skeleton-text>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-message ion-padding ion-text-center">
+    <ion-text color="danger">
+      <p>{{ error }}</p>
+    </ion-text>
   </div>
 </ion-content> 

@@ -7,3 +7,51 @@
     margin-bottom: 10px;
   }
 } 
+
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--ion-color-light);
+}
+
+.item-sprite {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.segment-content {
+  margin-top: 16px;
+}
+
+ion-segment {
+  padding: 8px 0;
+}
+
+ion-item {
+  --padding-start: 0;
+  
+  h2 {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+  }
+}
+
+.error-message {
+  text-align: center;
+  padding: 16px;
+  color: var(--ion-color-danger);
+} 

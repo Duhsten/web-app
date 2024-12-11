@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PokemonService } from '../services/pokemon.service';
-import { Pokemon } from '../models/pokemon.model';
+import { Pokemon, PokemonMove } from '../models/pokemon.model';
 import { LoadingController } from '@ionic/angular';
 import { Share } from '@capacitor/share';
 
@@ -40,6 +40,9 @@ export class PokemonDetailPage implements OnInit {
     fairy: '#EE99AC'
   };
 
+  moveSearchTerm: string = '';
+  filteredMoves: PokemonMove[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private pokemonService: PokemonService,
@@ -48,6 +51,7 @@ export class PokemonDetailPage implements OnInit {
 
   async ngOnInit() {
     await this.loadPokemonDetails();
+    this.filteredMoves = this.pokemon?.moves || [];
   }
 
   async loadPokemonDetails() {
@@ -88,17 +92,11 @@ export class PokemonDetailPage implements OnInit {
   }
 
   // Calculate stat percentage for progress bars
-  calculateStatPercentage(baseStat: number): number {
-    const maxBaseStat = 255; // Maximum possible base stat
-    return (baseStat / maxBaseStat) * 100;
-  }
-
-  // Get stat color based on value
-  getStatColor(baseStat: number): string {
-    if (baseStat >= 150) return 'success';
-    if (baseStat >= 90) return 'primary';
-    if (baseStat >= 60) return 'warning';
-    return 'danger';
+  getStatPercentage(baseStat: number): number {
+    // Using 255 as the max possible base stat (Blissey's HP)
+    const maxBaseStat = 255;
+    // Calculate percentage but cap it at 100
+    return Math.min((baseStat / maxBaseStat) * 100, 100);
   }
 
   segmentChanged(event: any) {  
@@ -139,5 +137,13 @@ export class PokemonDetailPage implements OnInit {
     } catch (error) {
       console.error('Error sharing:', error);
     }
+  }
+
+  filterMoves() {
+    if (!this.pokemon) return;
+    
+    this.filteredMoves = this.pokemon.moves.filter(move =>
+      move.move.name.toLowerCase().includes(this.moveSearchTerm.toLowerCase())
+    );
   }
 } 

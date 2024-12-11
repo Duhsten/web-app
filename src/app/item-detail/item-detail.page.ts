@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ItemService } from '../services/item.service';
 import { Item } from '../models/item.model';
 import { LoadingController } from '@ionic/angular';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-item-detail',
@@ -77,5 +78,26 @@ export class ItemDetailPage implements OnInit {
   async doRefresh(event: any) {
     await this.loadItemDetails();
     event.target.complete();
+  }
+
+  async shareItem() {
+    if (!this.item) return;
+
+    const shareText = `Check out the Pokémon item ${this.item.name.toUpperCase()}!\n\n` +
+      `Category: ${this.item.category.name}\n` +
+      `Cost: ${this.formatCost(this.item.cost)}\n\n` +
+      `Effect: ${this.getShortEffectText()}\n\n` +
+      `${this.item.sprites.default}`;
+
+    try {
+      await Share.share({
+        title: `Pokémon Item: ${this.item.name}`,
+        text: shareText,
+        url: this.item.sprites.default,
+        dialogTitle: 'Share this item',
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
   }
 } 
